@@ -4,15 +4,15 @@
         <menu>
 
             <item
-                android:id="@+id/notEkle"
+                android:id="@+id/addNote"
                 android:icon="@drawable/ic_add_circle_black_24dp"
                 android:title="Not Ekle" />
             <item
-                android:id="@+id/baglan"
+                android:id="@+id/connect"
                 android:icon="@drawable/ic_baseline_account_circle_24"
                 android:title="Giris Yap" />
             <item
-                android:id="@+id/degistir"
+                android:id="@+id/change"
                 android:icon="@drawable/ic_baseline_swap_horiz_24"
                 android:title="Hesap Değiştir" />
         </menu>
@@ -20,7 +20,7 @@
     <item android:title="Çıkış">
         <menu>
             <item
-                android:id="@+id/cikis"
+                android:id="@+id/exit"
                 android:icon="@drawable/ic_vpn_key_black_24dp"
                 android:title="Hesaptan Çık" />
         </menu>

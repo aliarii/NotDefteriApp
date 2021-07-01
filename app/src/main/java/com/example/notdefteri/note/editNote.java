@@ -3,7 +3,6 @@ package com.example.notdefteri.note;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,11 +27,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NotDuzenle extends AppCompatActivity {
+public class editNote extends AppCompatActivity {
     Intent data;
-    String gelenSifre;
-    EditText notBaslikDuzenle,notIcerikDuzenle;
-    String noteTitle,noteContent,notSifre;
+    String responsePassword;
+    EditText noteEditTitle, noteEditContent;
+    String noteTitle,noteContent, notePassword;
     FirebaseFirestore fStore;
     ProgressBar spinner;
     FirebaseUser user;
@@ -51,14 +50,14 @@ public class NotDuzenle extends AppCompatActivity {
 
         data = getIntent();
 
-        notIcerikDuzenle = findViewById(R.id.notIcerikDuzenle);
-        notBaslikDuzenle = findViewById(R.id.notBaslikDuzenle);
+        noteEditContent = findViewById(R.id.noteEditContent);
+        noteEditTitle = findViewById(R.id.noteEditTitle);
 
 
         noteTitle = data.getStringExtra("baslik");
         noteContent = data.getStringExtra("icerik");
-        notBaslikDuzenle.setText(noteTitle);
-        notIcerikDuzenle.setText(noteContent);
+        noteEditTitle.setText(noteTitle);
+        noteEditContent.setText(noteContent);
 
     }
     @Override
@@ -74,20 +73,20 @@ public class NotDuzenle extends AppCompatActivity {
             Toast.makeText(this,"İptal Edildi.", Toast.LENGTH_SHORT).show();
             onBackPressed();
         }
-        else if(item.getItemId() == R.id.passwordEkle){
+        else if(item.getItemId() == R.id.addPassword){
 
             final AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Sifre Gir");
             final EditText input = new EditText(this);
             alert.setView(input);
             alert.setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    notSifre = input.getText().toString().trim();
+                    notePassword = input.getText().toString().trim();
 
                 }
             });
             alert.setNeutralButton("Şifreyi Kaldır",new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    notSifre = null;
+                    notePassword = null;
 
                 }
             });
@@ -107,12 +106,12 @@ public class NotDuzenle extends AppCompatActivity {
         }
         else if(item.getItemId()==R.id.save)
         {
-            String nTitle = notBaslikDuzenle.getText().toString();
-            String nContent = notIcerikDuzenle.getText().toString();
-            String nSifre = notSifre;
+            String nTitle = noteEditTitle.getText().toString();
+            String nContent = noteEditContent.getText().toString();
+            String nPassword = notePassword;
 
             if(nTitle.isEmpty() || nContent.isEmpty()){
-                Toast.makeText(NotDuzenle.this, "Boş Alanlarla Kayıt Edilemez.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(editNote.this, "Boş Alanlarla Kayıt Edilemez.", Toast.LENGTH_SHORT).show();
             }
             else{
                 spinner.setVisibility(View.VISIBLE);
@@ -124,18 +123,18 @@ public class NotDuzenle extends AppCompatActivity {
                 Map<String,Object> note = new HashMap<>();
                 note.put("baslik",nTitle);
                 note.put("icerik",nContent);
-                note.put("sifre",nSifre);
+                note.put("sifre", nPassword);
                 docref.update(note).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(NotDuzenle.this, "Not Kaydedildi.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(editNote.this, "Not Kaydedildi.", Toast.LENGTH_SHORT).show();
                         finish();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(NotDuzenle.this, "Hata, Tekrar Deneyin.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(editNote.this, "Hata, Tekrar Deneyin.", Toast.LENGTH_SHORT).show();
                         spinner.setVisibility(View.VISIBLE);
                     }
                 });

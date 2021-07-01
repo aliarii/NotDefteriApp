@@ -1,45 +1,45 @@
 package com.example.notdefteri.model;
 
 public class Note {
-    private String baslik;
-    private String icerik;
-    private String sifre;
-    private String tarih;
+    private String title;
+    private String content;
+    private String password;
+    private String date;
     public Note(){}
     public Note(String baslik,String icerik,String sifre,String tarih){
-        this.baslik = baslik;
-        this.icerik = icerik;
-        this.sifre = sifre;
-        this.tarih = tarih;
+        this.title = baslik;
+        this.content = icerik;
+        this.password = sifre;
+        this.date = tarih;
     }
-    public String getTarih() {
-        return tarih;
-    }
-
-    public void setTarih(String tarih) {
-        this.tarih = tarih;
+    public String getDate() {
+        return date;
     }
 
-    public String getBaslik() {
-        return baslik;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setBaslik(String baslik) {
-        this.baslik = baslik;
+    public String getTitle() {
+        return title;
     }
 
-    public String getSifre(){
-        return sifre;
-    }
-    public void setSifre(String sifre) {
-        this.sifre = sifre;
-    }
-    public String getIcerik() {
-        return icerik;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setIcerik(String icerik) {
-        this.icerik = icerik;
+    public String getPassword(){
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
 }

@@ -28,12 +28,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.notdefteri.dogrulama.Giris;
-import com.example.notdefteri.dogrulama.HesapDegistir;
-import com.example.notdefteri.dogrulama.Kayit;
+import com.example.notdefteri.dogrulama.loginPage;
+import com.example.notdefteri.dogrulama.changeAccount;
+import com.example.notdefteri.dogrulama.registerPage;
 import com.example.notdefteri.model.Note;
-import com.example.notdefteri.note.NotDetay;
-import com.example.notdefteri.note.NotEkle;
+import com.example.notdefteri.note.noteDetail;
+import com.example.notdefteri.note.addNote;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -75,17 +75,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onBindViewHolder(@NonNull final NoteViewHolder noteViewHolder, final int i, @NonNull final Note note) {
 
-                if(note.getSifre()!=null)
+                if(note.getPassword()!=null)
                 {
-                    noteViewHolder.notBaslik.setText(note.getBaslik());
-                    noteViewHolder.notIcerik.setText("İçerik Şifreli");
-                    noteViewHolder.notTarih.setText(note.getTarih());
+                    noteViewHolder.noteTitle.setText(note.getTitle());
+                    noteViewHolder.noteContent.setText("İçerik Şifreli");
+                    noteViewHolder.noteDate.setText(note.getDate());
                 }
                 else
                 {
-                    noteViewHolder.notBaslik.setText(note.getBaslik());
-                    noteViewHolder.notIcerik.setText(note.getIcerik());
-                    noteViewHolder.notTarih.setText(note.getTarih());
+                    noteViewHolder.noteTitle.setText(note.getTitle());
+                    noteViewHolder.noteContent.setText(note.getContent());
+                    noteViewHolder.noteDate.setText(note.getDate());
                 }
 
 
@@ -95,12 +95,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onClick(View v) {
 
-                        Intent i = new Intent(v.getContext(), NotDetay.class);
-                        i.putExtra("baslik",note.getBaslik());
-                        i.putExtra("icerik",note.getIcerik());
-                        i.putExtra("tarih",note.getTarih());
+                        Intent i = new Intent(v.getContext(), noteDetail.class);
+                        i.putExtra("baslik",note.getTitle());
+                        i.putExtra("icerik",note.getContent());
+                        i.putExtra("tarih",note.getDate());
                         i.putExtra("notId",docId);
-                        i.putExtra("sifre",note.getSifre());
+                        i.putExtra("sifre",note.getPassword());
 
                         v.getContext().startActivity(i);
 
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         menu.getMenu().add("Sil").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-                                if(noteViewHolder.notIcerik.getText().toString()=="İçerik Şifreli")
+                                if(noteViewHolder.noteContent.getText().toString()=="İçerik Şifreli")
                                 {
                                     final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this).setTitle("Sifre Gir").setCancelable(false);
                                     final EditText input = new EditText(MainActivity.this);
@@ -125,12 +125,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     alert.setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int whichButton) {
                                             String sifreKontrol = input.getText().toString().trim();
-                                            if(!sifreKontrol.equals(note.getSifre()))
+                                            if(!sifreKontrol.equals(note.getPassword()))
                                             {
                                                 Toast.makeText(MainActivity.this, "Yanlış Şifre.", Toast.LENGTH_SHORT).show();
 
                                             }
-                                            else if (sifreKontrol.equals(note.getSifre()))
+                                            else if (sifreKontrol.equals(note.getPassword()))
                                             {
                                                 DocumentReference docRef = fStore.collection("notlar").document(user.getUid()).collection("notlarim").document(docId);
                                                 docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -202,8 +202,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         noteLists.setAdapter(noteAdapter);
 
         View headerView = nav_view.getHeaderView(0);
-        TextView username = headerView.findViewById(R.id.kullaniciEkranIsim);
-        TextView userEmail = headerView.findViewById(R.id.kullaniciEkranEmail);
+        TextView username = headerView.findViewById(R.id.userDisplayName);
+        TextView userEmail = headerView.findViewById(R.id.userDisplayEmail);
 
         if(user.isAnonymous()){
             userEmail.setVisibility(View.GONE);
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), NotEkle.class));
+                startActivity(new Intent(getApplicationContext(), addNote.class));
                 overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
 
             }
@@ -227,30 +227,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawerLayout.closeDrawer(GravityCompat.START);
         switch(item.getItemId()){
-            case R.id.notEkle:
-                startActivity(new Intent(this, NotEkle.class));
+            case R.id.addNote:
+                startActivity(new Intent(this, addNote.class));
                 overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
                 break;
 
-            case R.id.baglan:
+            case R.id.connect:
                 if(user.isAnonymous()){
-                    startActivity(new Intent(this, Giris.class));
+                    startActivity(new Intent(this, loginPage.class));
                     overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
                 }else {
                     Toast.makeText(this, "Hesabınız Zaten Bağlı.", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.degistir:
+            case R.id.change:
                 if(user.isAnonymous()){
                     Toast.makeText(this, "Önce Giriş Yapmalısınız.", Toast.LENGTH_SHORT).show();
                 }else {
 
-                    startActivity(new Intent(this, HesapDegistir.class));
+                    startActivity(new Intent(this, changeAccount.class));
                     overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
 
                 }
                 break;
-            case R.id.cikis:
+            case R.id.exit:
                 checkUser();
                 break;
                 default:
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setPositiveButton("Hesap Oluştur", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(getApplicationContext(),Kayit.class));
+                        startActivity(new Intent(getApplicationContext(), registerPage.class));
                         finish();
                     }
                 }).setNegativeButton("Sil ve Çık", new DialogInterface.OnClickListener() {
@@ -312,21 +312,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(item.getItemId() == R.id.noteAdd)
         {
-            startActivity(new Intent(getApplicationContext(), NotEkle.class));
+            startActivity(new Intent(getApplicationContext(), addNote.class));
             overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
 
         }
         return super.onOptionsItemSelected(item);
     }
     public class NoteViewHolder extends RecyclerView.ViewHolder{
-        TextView notBaslik,notIcerik,notTarih;
+        TextView noteTitle, noteContent, noteDate;
         View view;
         CardView mCardView;
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
-            notBaslik = itemView.findViewById(R.id.basliklar);
-            notIcerik = itemView.findViewById(R.id.icerik);
-            notTarih = itemView.findViewById(R.id.tarih);
+            noteTitle = itemView.findViewById(R.id.titles);
+            noteContent = itemView.findViewById(R.id.content);
+            noteDate = itemView.findViewById(R.id.date);
             mCardView = itemView.findViewById(R.id.noteCard);
             view = itemView;
         }

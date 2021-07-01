@@ -24,10 +24,10 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.example.notdefteri.MainActivity;
 import com.example.notdefteri.R;
 
-public class Kayit extends AppCompatActivity {
-    EditText rkullaniciIsim,rkullaniciEmail,rsifre,rsifreDogrula;
-    Button hesapOlustur;
-    TextView girisYap;
+public class registerPage extends AppCompatActivity {
+    EditText rUserName, rUserEmail, rPassword, rConfirmPassword;
+    Button createAccount;
+    TextView loginText;
     ProgressBar progressBar;
     FirebaseAuth fAuth;
     @Override
@@ -36,41 +36,41 @@ public class Kayit extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         getSupportActionBar().setTitle("Not Defterine Kayıt Olun");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        rkullaniciIsim = findViewById(R.id.kullaniciIsim);
-        rkullaniciEmail = findViewById(R.id.kullaniciEmail);
-        rsifre = findViewById(R.id.sifre);
-        rsifreDogrula = findViewById(R.id.sifreDogrula);
-        hesapOlustur = findViewById(R.id.hesapOlustur);
-        girisYap = findViewById(R.id.giris);
+        rUserName = findViewById(R.id.userName);
+        rUserEmail = findViewById(R.id.userEmail);
+        rPassword = findViewById(R.id.userPassword);
+        rConfirmPassword = findViewById(R.id.confirmPassword);
+        createAccount = findViewById(R.id.createAccount);
+        loginText = findViewById(R.id.login);
         progressBar = findViewById(R.id.progressBar4);
         fAuth = FirebaseAuth.getInstance();
-        girisYap.setOnClickListener(new View.OnClickListener() {
+        loginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Giris.class));
+                startActivity(new Intent(getApplicationContext(), loginPage.class));
             }
         });
-        hesapOlustur.setOnClickListener(new View.OnClickListener() {
+        createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final String uUsername = rkullaniciIsim.getText().toString();
-                String uUserEmail = rkullaniciEmail.getText().toString();
-                String uUserPass = rsifre.getText().toString();
-                String uConfPass = rsifreDogrula.getText().toString();
+                final String uUsername = rUserName.getText().toString();
+                String uUserEmail = rUserEmail.getText().toString();
+                String uUserPass = rPassword.getText().toString();
+                String uConfPass = rConfirmPassword.getText().toString();
                 if(uUserEmail.isEmpty() || uUsername.isEmpty() || uUserPass.isEmpty() || uConfPass.isEmpty()){
-                    Toast.makeText(Kayit.this, "Tüm Alanları Doldurun.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(registerPage.this, "Tüm Alanları Doldurun.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(!uUserPass.equals(uConfPass)){
-                    rsifreDogrula.setError("Şifre Yanlış.");
+                    rConfirmPassword.setError("Şifre Yanlış.");
                 }
                 progressBar.setVisibility(View.VISIBLE);
                 AuthCredential credential = EmailAuthProvider.getCredential(uUserEmail,uUserPass);
                 fAuth.getCurrentUser().linkWithCredential(credential).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        Toast.makeText(Kayit.this, "Notlar Senkronize Edildi.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(registerPage.this, "Notlar Senkronize Edildi.", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(),MainActivity.class));
                         FirebaseUser usr = fAuth.getCurrentUser();
                         UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
@@ -85,7 +85,7 @@ public class Kayit extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Kayit.this, "Bağlanılamadı, Tekrar Deneyin.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(registerPage.this, "Bağlanılamadı, Tekrar Deneyin.", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.VISIBLE);
                     }
                 });

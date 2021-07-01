@@ -1,7 +1,6 @@
 package com.example.notdefteri.note;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.notdefteri.R;
-import com.example.notdefteri.dogrulama.Kayit;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,12 +29,12 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class NotEkle extends AppCompatActivity {
-    String notTarih = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date());
+public class addNote extends AppCompatActivity {
+    String noteDate = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(new Date());
 
     FirebaseFirestore fStore;
-    EditText notBaslik,notIcerik;
-    String notSifre;
+    EditText noteTitle, noteContent;
+    String notePassword;
     ProgressBar progressBarSave;
     FirebaseUser user;
 
@@ -49,8 +47,8 @@ public class NotEkle extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         fStore = FirebaseFirestore.getInstance();
-        notIcerik = findViewById(R.id.notIcerikEkle);
-        notBaslik = findViewById(R.id.notBaslikEkle);
+        noteContent = findViewById(R.id.noteAddContent);
+        noteTitle = findViewById(R.id.noteAddTitle);
         progressBarSave = findViewById(R.id.progressBar);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -71,14 +69,14 @@ public class NotEkle extends AppCompatActivity {
             //ana ekrana dön
             onBackPressed();
         }
-        else if(item.getItemId() == R.id.passwordEkle){
+        else if(item.getItemId() == R.id.addPassword){
 
             final AlertDialog.Builder alert = new AlertDialog.Builder(this).setTitle("Sifre Gir");
             final EditText input = new EditText(this);
             alert.setView(input);
             alert.setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    notSifre = input.getText().toString().trim();
+                    notePassword = input.getText().toString().trim();
 
                 }
             });
@@ -100,15 +98,15 @@ public class NotEkle extends AppCompatActivity {
         }
         else if(item.getItemId()==R.id.save)
         {
-            String nBaslik = notBaslik.getText().toString();
-            String nIcerik = notIcerik.getText().toString();
-            String nSifre = notSifre;
-            String nTarih = notTarih;
-            if(nBaslik.isEmpty()){
-                nBaslik="Başlıksız";
+            String nTitle = noteTitle.getText().toString();
+            String nContent = noteContent.getText().toString();
+            String nPassword = notePassword;
+            String nDate = noteDate;
+            if(nTitle.isEmpty()){
+                nTitle ="Başlıksız";
             }
-            if(nIcerik.isEmpty()){
-                nIcerik="Boş";
+            if(nContent.isEmpty()){
+                nContent ="Boş";
             }
 
             progressBarSave.setVisibility(View.VISIBLE);
@@ -117,14 +115,14 @@ public class NotEkle extends AppCompatActivity {
 
             DocumentReference docref = fStore.collection("notlar").document(user.getUid()).collection("notlarim").document();
             Map<String,Object> note = new HashMap<>();
-            note.put("baslik",nBaslik);
-            note.put("icerik",nIcerik);
-            note.put("sifre",nSifre);
-            note.put("tarih",nTarih);
+            note.put("baslik", nTitle);
+            note.put("icerik", nContent);
+            note.put("sifre", nPassword);
+            note.put("tarih", nDate);
             docref.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Toast.makeText(NotEkle.this, "Not Eklendi.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(addNote.this, "Not Eklendi.", Toast.LENGTH_SHORT).show();
                     //ana ekrana dön
                     onBackPressed();
                     //finish();
@@ -133,7 +131,7 @@ public class NotEkle extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(NotEkle.this, "Hata, Tekrar Deneyin.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(addNote.this, "Hata, Tekrar Deneyin.", Toast.LENGTH_SHORT).show();
                     progressBarSave.setVisibility(View.VISIBLE);
                 }
             });

@@ -6,7 +6,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.notdefteri.Splash;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -24,10 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.notdefteri.MainActivity;
 import com.example.notdefteri.R;
 
-public class Giris extends AppCompatActivity {
-    EditText lEmail,lSifre;
+public class loginPage extends AppCompatActivity {
+    EditText lEmail, lPassword;
     Button loginNow;
-    TextView sifremiUnuttum,hesapOlustur;
+    TextView forgotPassword, createAccount;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     FirebaseUser user;
@@ -40,11 +38,11 @@ public class Giris extends AppCompatActivity {
         getSupportActionBar().setTitle("Not Defterine Giriş");
 
         lEmail = findViewById(R.id.email);
-        lSifre = findViewById(R.id.lSifre);
-        loginNow = findViewById(R.id.girisBtn);
+        lPassword = findViewById(R.id.lPassword);
+        loginNow = findViewById(R.id.loginBtn);
 
-        sifremiUnuttum = findViewById(R.id.sifremiUnuttum);
-        hesapOlustur = findViewById(R.id.hesapOlustur);
+        forgotPassword = findViewById(R.id.forgotPassword);
+        createAccount = findViewById(R.id.createAccount);
         user = FirebaseAuth.getInstance().getCurrentUser();
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -55,9 +53,9 @@ public class Giris extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String mEmail = lEmail.getText().toString();
-                String mPassword = lSifre.getText().toString();
+                String mPassword = lPassword.getText().toString();
                 if(mEmail.isEmpty() || mPassword.isEmpty()){
-                    Toast.makeText(Giris.this, "Tüm Alanları Doldurun.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(loginPage.this, "Tüm Alanları Doldurun.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -71,35 +69,35 @@ public class Giris extends AppCompatActivity {
                             fStore.collection("notlar").document(user.getUid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(Giris.this, "Kayıtsız Notlar Silindi.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(loginPage.this, "Kayıtsız Notlar Silindi.", Toast.LENGTH_SHORT).show();
                                 }
                             });
                             // geçici kullanıcı sil
                             user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(Giris.this, "Kayıtsız Üye Silindi.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(loginPage.this, "Kayıtsız Üye Silindi.", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
 
-                        Toast.makeText(Giris.this, "Giriş Başarılı !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(loginPage.this, "Giriş Başarılı !", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Giris.this, "Giriş Başarısız. " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(loginPage.this, "Giriş Başarısız. " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
             }
         });
-        hesapOlustur.setOnClickListener(new View.OnClickListener() {
+        createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Kayit.class));
+                startActivity(new Intent(getApplicationContext(), registerPage.class));
             }
         });
     }
@@ -111,7 +109,7 @@ public class Giris extends AppCompatActivity {
                 .setPositiveButton("Hesap Oluştur", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(getApplicationContext(),Kayit.class));
+                        startActivity(new Intent(getApplicationContext(), registerPage.class));
                         finish();
                     }
                 }).setNegativeButton("Sil ve Giriş Yap", new DialogInterface.OnClickListener() {

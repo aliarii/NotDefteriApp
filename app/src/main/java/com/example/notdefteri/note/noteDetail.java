@@ -20,10 +20,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.notdefteri.R;
 
-public class NotDetay extends AppCompatActivity {
-    Intent veri;
-    String gelenSifre;
-    TextView content,title,tarih;
+public class noteDetail extends AppCompatActivity {
+    Intent data;
+    String responsePassword;
+    TextView content,title, date;
 
 
     @Override
@@ -35,22 +35,22 @@ public class NotDetay extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        veri = getIntent();
+        data = getIntent();
 
         content = findViewById(R.id.notIcerikDetay);
         title = findViewById(R.id.notDetayBaslik);
-        tarih = findViewById(R.id.notIcerikDetayTarih);
+        date = findViewById(R.id.notIcerikDetayTarih);
         content.setMovementMethod(new ScrollingMovementMethod());
-        gelenSifre=veri.getStringExtra("sifre");
-        if (gelenSifre!=null)
+        responsePassword = data.getStringExtra("sifre");
+        if (responsePassword !=null)
         {
             passwordAlert();
         }
         else
         {
-            tarih.setText(veri.getStringExtra("tarih"));
-            content.setText(veri.getStringExtra("icerik"));
-            title.setText(veri.getStringExtra("baslik"));
+            date.setText(data.getStringExtra("tarih"));
+            content.setText(data.getStringExtra("icerik"));
+            title.setText(data.getStringExtra("baslik"));
         }
 
 
@@ -64,16 +64,16 @@ public class NotDetay extends AppCompatActivity {
         alert.setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String sifreKontrol = input.getText().toString().trim();
-                if(!sifreKontrol.equals(gelenSifre))
+                if(!sifreKontrol.equals(responsePassword))
                 {
-                    Toast.makeText(NotDetay.this, "Yanlış Şifre.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(noteDetail.this, "Yanlış Şifre.", Toast.LENGTH_SHORT).show();
                     passwordAlert();
                 }
-                if (sifreKontrol.equals(gelenSifre))
+                if (sifreKontrol.equals(responsePassword))
                 {
-                    tarih.setText(veri.getStringExtra("tarih"));
-                    content.setText(veri.getStringExtra("icerik"));
-                    title.setText(veri.getStringExtra("baslik"));
+                    date.setText(data.getStringExtra("tarih"));
+                    content.setText(data.getStringExtra("icerik"));
+                    title.setText(data.getStringExtra("baslik"));
                 }
 
             }
@@ -101,10 +101,10 @@ public class NotDetay extends AppCompatActivity {
         }
         else if(item.getItemId()== R.id.edit)
         {
-            Intent i = new Intent(getApplicationContext(),NotDuzenle.class);
-            i.putExtra("baslik",veri.getStringExtra("baslik"));
-            i.putExtra("icerik",veri.getStringExtra("icerik"));
-            i.putExtra("notId",veri.getStringExtra("notId"));
+            Intent i = new Intent(getApplicationContext(), editNote.class);
+            i.putExtra("baslik", data.getStringExtra("baslik"));
+            i.putExtra("icerik", data.getStringExtra("icerik"));
+            i.putExtra("notId", data.getStringExtra("notId"));
             startActivity(i);
             finish();
 

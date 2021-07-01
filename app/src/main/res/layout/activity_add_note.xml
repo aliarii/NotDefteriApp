@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".note.NotEkle">
+    tools:context=".note.addNote">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <EditText
-                android:id="@+id/notBaslikEkle"
+                android:id="@+id/noteAddTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"

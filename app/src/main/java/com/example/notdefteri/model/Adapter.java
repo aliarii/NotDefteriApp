@@ -13,17 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import com.example.notdefteri.R;
-import com.example.notdefteri.note.NotDetay;
+import com.example.notdefteri.note.noteDetail;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
-    List<String> basliklar;
-    List<String> icerik;
-    List<String> sifre;
+    List<String> titles;
+    List<String> content;
+    List<String> password;
 
-    public Adapter(List<String> baslik,List<String> icerik,List<String> sifre){
-        this.basliklar = baslik;
-        this.icerik = icerik;
-        this.sifre = sifre;
+    public Adapter(List<String> title, List<String> content, List<String> password){
+        this.titles = title;
+        this.content = content;
+        this.password = password;
 
     }
 
@@ -37,15 +37,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull Adapter.ViewHolder holder, final int position) {
 
-        holder.notBaslik.setText(basliklar.get(position));
-        holder.notIcerik.setText(icerik.get(position));
+        holder.noteTitle.setText(titles.get(position));
+        holder.noteContent.setText(content.get(position));
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), NotDetay.class);
-                i.putExtra("baslik",basliklar.get(position));
-                i.putExtra("icerik",icerik.get(position));
-                i.putExtra("sifre",sifre.get(position));
+                Intent i = new Intent(v.getContext(), noteDetail.class);
+                i.putExtra("baslik", titles.get(position));
+                i.putExtra("icerik", content.get(position));
+                i.putExtra("sifre", password.get(position));
 
                 v.getContext().startActivity(i);
             }
@@ -54,18 +54,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return basliklar.size();
+        return titles.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView notBaslik,notIcerik;
+        TextView noteTitle, noteContent;
         View view;
         CardView mCardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            notBaslik = itemView.findViewById(R.id.basliklar);
-            notIcerik = itemView.findViewById(R.id.icerik);
+            noteTitle = itemView.findViewById(R.id.titles);
+            noteContent = itemView.findViewById(R.id.content);
             mCardView = itemView.findViewById(R.id.noteCard);
             view = itemView;
         }

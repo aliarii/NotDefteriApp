@@ -20,14 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".dogrulama.Kayit" />
-        <activity android:name=".dogrulama.Giris" />
-        <activity android:name=".dogrulama.HesapDegistir" />
+        <activity android:name=".dogrulama.registerPage" />
+        <activity android:name=".dogrulama.loginPage" />
+        <activity android:name=".dogrulama.changeAccount" />
         <activity
-            android:name=".note.NotDuzenle"
+            android:name=".note.editNote"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".note.NotEkle"
+            android:name=".note.addNote"
             android:label="@string/title_activity_add_note"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -36,7 +36,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".note.NotDetay"
+            android:name=".note.noteDetail"
             android:label="@string/title_activity_note_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

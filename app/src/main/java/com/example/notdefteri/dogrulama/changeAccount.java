@@ -20,8 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class HesapDegistir extends AppCompatActivity {
-    EditText otherlEmail,otherlSifre;
+public class changeAccount extends AppCompatActivity {
+    EditText otherlEmail, otherlPassword;
     Button otherloginNow;
 
     FirebaseAuth otherfAuth;
@@ -36,8 +36,8 @@ public class HesapDegistir extends AppCompatActivity {
         getSupportActionBar().setTitle("Hesap Değiştir");
 
         otherlEmail = findViewById(R.id.otherEmail);
-        otherlSifre = findViewById(R.id.otherlSifre);
-        otherloginNow = findViewById(R.id.otherGirisBtn);
+        otherlPassword = findViewById(R.id.otherlPassword);
+        otherloginNow = findViewById(R.id.otherLoginBtn);
         otheruser = FirebaseAuth.getInstance().getCurrentUser();
         otherfAuth = FirebaseAuth.getInstance();
         otherfStore = FirebaseFirestore.getInstance();
@@ -47,10 +47,10 @@ public class HesapDegistir extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String mEmail = otherlEmail.getText().toString();
-                String mPassword = otherlSifre.getText().toString();
+                String mPassword = otherlPassword.getText().toString();
 
                 if(mEmail.isEmpty() || mPassword.isEmpty()){
-                    Toast.makeText(HesapDegistir.this, "Tüm Alanları Doldurun.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(changeAccount.this, "Tüm Alanları Doldurun.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -67,7 +67,7 @@ public class HesapDegistir extends AppCompatActivity {
                             otherfStore.collection("notlar").document(user.getUid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(HesapDegistir.this, "Kayıtsız Notlar Silindi.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(changeAccount.this, "Kayıtsız Notlar Silindi.", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -75,11 +75,11 @@ public class HesapDegistir extends AppCompatActivity {
                             user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(HesapDegistir.this, "Kayıtsız Üye Silindi.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(changeAccount.this, "Kayıtsız Üye Silindi.", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
-                        Toast.makeText(HesapDegistir.this, "Giriş Başarılı !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(changeAccount.this, "Giriş Başarılı !", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finish();
 
@@ -87,7 +87,7 @@ public class HesapDegistir extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(HesapDegistir.this, "Giriş Başarısız. " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(changeAccount.this, "Giriş Başarısız. " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
