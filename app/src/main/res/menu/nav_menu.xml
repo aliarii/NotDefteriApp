@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Genel">
+        <menu>
+
+            <item
+                android:id="@+id/notEkle"
+                android:icon="@drawable/ic_add_circle_black_24dp"
+                android:title="Not Ekle" />
+            <item
+                android:id="@+id/baglan"
+                android:icon="@drawable/ic_baseline_account_circle_24"
+                android:title="Giris Yap" />
+            <item
+                android:id="@+id/degistir"
+                android:icon="@drawable/ic_baseline_swap_horiz_24"
+                android:title="Hesap Değiştir" />
+        </menu>
+    </item>
+    <item android:title="Çıkış">
+        <menu>
+            <item
+                android:id="@+id/cikis"
+                android:icon="@drawable/ic_vpn_key_black_24dp"
+                android:title="Hesaptan Çık" />
+        </menu>
+    </item>
+
+</menu>

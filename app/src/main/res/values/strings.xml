@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Not Defteri</string>
+    <string name="open">ac</string>
+    <string name="close">kapa</string>
+    <string name="title_activity_note_details">NotDetay</string>
+    <string name="title_activity_add_note">NotEkle</string>
+</resources>
